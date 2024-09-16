@@ -3,4 +3,6 @@ services:
     build: .
     volumes:
       - .:/app
+    ports:
+      - "5173:5173"
     tty: true

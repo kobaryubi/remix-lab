@@ -4,12 +4,13 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "dev": "remix vite:dev"
+    "dev": "remix vite:dev --host 0.0.0.0"
   },
   "dependencies": {
     "@remix-run/node": "^2.12.0",
     "@remix-run/react": "^2.12.0",
-    "@remix-run/serve": "^2.12.0"
+    "@remix-run/serve": "^2.12.0",
+    "isbot": "^4.4.0"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.12.0",
