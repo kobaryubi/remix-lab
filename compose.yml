@@ -1,0 +1,6 @@
+services:
+  remix:
+    build: .
+    volumes:
+      - .:/app
+    tty: true
