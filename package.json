@@ -1,4 +1,6 @@
 {
   "name": "remix-lab",
-  "private": true
+  "private": true,
+  "sideEffects": false,
+  "type": "module"
 }
