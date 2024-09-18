@@ -1,4 +1,15 @@
+import { json } from "@remix-run/node";
 import { Links, Meta, Scripts, ScrollRestoration } from "@remix-run/react";
+import { MockArticleRepository } from "~/infrastructure/repositories/MockArticleRepository";
+import { ArticleUseCases } from "~/application/usecases/ArticleUseCases";
+
+export const loader = async () => {
+  const articleRepository = new MockArticleRepository();
+  const useCases = new ArticleUseCases(articleRepository);
+  const articles = await useCases.getArticles();
+
+  return json({ articles});
+}
 
 export default function App() {
   return (
