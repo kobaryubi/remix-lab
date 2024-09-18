@@ -1,5 +1,5 @@
 import { json } from "@remix-run/node";
-import { Links, Meta, Scripts, ScrollRestoration } from "@remix-run/react";
+import { Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react";
 import { MockArticleRepository } from "~/infrastructure/repositories/MockArticleRepository";
 import { ArticleUseCases } from "~/application/usecases/ArticleUseCases";
 
@@ -12,6 +12,8 @@ export const loader = async () => {
 }
 
 export default function App() {
+  const { articles } = useLoaderData<typeof loader>();
+
   return (
     <html lang="en">
       <head>
@@ -21,8 +23,26 @@ export default function App() {
         <Links />
       </head>
       <body>
+        <div>
+          <nav>
+            {articles.length ? (
+              <ul>
+                {articles.map(({id, title}) => (
+                  <li key={id}>
+                    <Link to={`articles/${id}`} >{title}</Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>
+                <i>No articles</i>
+              </p>
+            )}
+          </nav>
+        </div>
+        <Outlet />
         <Scripts />
-         <ScrollRestoration />
+        <ScrollRestoration />
       </body>
     </html>
   )
