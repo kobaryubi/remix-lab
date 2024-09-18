@@ -8,4 +8,12 @@ export class MockArticleRepository implements ArticleRepository {
       { id: 2, title: "Second Article" },
     ];
   }
+
+  async getArticle(articleId: number): Promise<Article | null> {
+    if (articleId === 1) {
+      return { id: 1, title: "First Article" };
+    }
+
+    return null;
+  }
 }
