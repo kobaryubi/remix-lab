@@ -1,6 +1,7 @@
 import { ARTICLE_ENTITY_NAME, Article } from "~/domain/entities/Article";
 import { EntityNotFoundError } from "~/domain/errors/EntityNotFoundError";
 import { ArticleRepository } from "~/domain/repositories/ArticleRepository";
+import { CreateArticleDTO } from "~/application/dtos/CreateArticleDTO";
 
 export class ArticleUseCases {
   constructor(
@@ -18,5 +19,9 @@ export class ArticleUseCases {
     }
 
     return article;
+  }
+
+  async createArticle(createArticleDTO: CreateArticleDTO): Promise<Article> {
+    return this.articleRepository.createArticle(createArticleDTO);
   }
 }

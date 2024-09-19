@@ -1,7 +1,15 @@
-import { json } from "@remix-run/node";
-import { Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react";
+import { json, redirect } from "@remix-run/node";
+import { Form, Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react";
 import { MockArticleRepository } from "~/infrastructure/repositories/MockArticleRepository";
 import { ArticleUseCases } from "~/application/usecases/ArticleUseCases";
+
+export const action = async () => {
+  const articleRepository = new MockArticleRepository();
+  const useCases = new ArticleUseCases(articleRepository);
+  const article = await useCases.createArticle({ title: "New Article" });
+
+  return redirect(`/articles/${article.id}/edit`);
+}
 
 export const loader = async () => {
   const articleRepository = new MockArticleRepository();
@@ -23,6 +31,11 @@ export default function App() {
         <Links />
       </head>
       <body>
+        <div>
+          <Form method="post">
+            <button type="submit">New</button>
+          </Form>
+        </div>
         <div>
           <nav>
             {articles.length ? (
