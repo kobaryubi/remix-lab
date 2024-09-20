@@ -1,5 +1,5 @@
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
+import { Form, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { ArticleUseCases } from "~/application/usecases/ArticleUseCases";
 import { EntityNotFoundError } from "~/domain/errors/EntityNotFoundError";
@@ -27,13 +27,25 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   }
 }
 
-export default function Article() {
+export default function EditArticle() {
   const { article } = useLoaderData<typeof loader>();
   const { title } = article;
 
   return (
-    <div>
-      <h1>{title}</h1>
-    </div>
+    <Form method="POST">
+      <label>
+        <span>Title</span>
+        <input
+          type="text"
+          placeholder="Title"
+          name="title"
+          defaultValue={title}
+          aria-label="Title"
+        />
+      </label>
+      <p>
+        <button type="submit">Save</button>
+      </p>
+    </Form>
   )
 }
