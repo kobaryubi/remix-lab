@@ -1,9 +1,27 @@
-import { LoaderFunctionArgs, json } from "@remix-run/node";
+import { ActionFunction, LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { ArticleUseCases } from "~/application/usecases/ArticleUseCases";
 import { EntityNotFoundError } from "~/domain/errors/EntityNotFoundError";
 import { MockArticleRepository } from "~/infrastructure/repositories/MockArticleRepository";
+
+export const action: ActionFunction = async ({
+  params,
+  request,
+}) => {
+  invariant(params.articleId, "Missing articleId param");
+
+  const articleId = parseInt(params.articleId);
+
+  const formData = await request.formData();
+  const updateArticleDTO = Object.fromEntries(formData);
+
+  const articleRepository = new MockArticleRepository();
+  const useCases = new ArticleUseCases(articleRepository);
+  await useCases.updateArticle(articleId, updateArticleDTO);
+
+  return redirect(`/articles/${articleId}`);
+}
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   invariant(params.articleId, "Missing articleId param");
@@ -32,7 +50,7 @@ export default function EditArticle() {
   const { title } = article;
 
   return (
-    <Form method="POST">
+    <Form method="post">
       <label>
         <span>Title</span>
         <input

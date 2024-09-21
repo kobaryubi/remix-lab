@@ -29,4 +29,8 @@ export class MockArticleRepository implements ArticleRepository {
   async createArticle(createArticleDTO: CreateArticleDTO): Promise<Article> {
     return { id: 3, ...createArticleDTO };
   }
+
+  async updateArticle(articleId: number, updateArticleDTO: CreateArticleDTO): Promise<Article> {
+    return { id: articleId, ...updateArticleDTO };
+  }
 }
