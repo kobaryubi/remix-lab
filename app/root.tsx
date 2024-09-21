@@ -1,5 +1,5 @@
 import { json, redirect } from "@remix-run/node";
-import { Form, Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react";
+import { Form, Link, Links, Meta, NavLink, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react";
 import { MockArticleRepository } from "~/infrastructure/repositories/MockArticleRepository";
 import { ArticleUseCases } from "~/application/usecases/ArticleUseCases";
 
@@ -42,7 +42,12 @@ export default function App() {
               <ul>
                 {articles.map(({id, title}) => (
                   <li key={id}>
-                    <Link to={`articles/${id}`} >{title}</Link>
+                    <NavLink
+                      to={`articles/${id}`}
+                      className={({ isActive, isPending }) => (isActive ? "active" : isPending ? "pending" : "")}
+                    >
+                      {title}
+                    </NavLink>
                   </li>
                 ))}
               </ul>
