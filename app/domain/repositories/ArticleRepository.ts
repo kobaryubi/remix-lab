@@ -8,4 +8,5 @@ export interface ArticleRepository {
   getArticle(articleId: number): Promise<Article | null>
   createArticle(createArticleDTO: CreateArticleDTO): Promise<Article>
   updateArticle(articleId: number, updateArticleDTO: UpdateArticleDTO): Promise<Article>
+  deleteArticle(articleId: number): Promise<void>
 }

@@ -29,4 +29,8 @@ export class ArticleUseCases {
   async updateArticle(articleId: number, updateArticleDTO: UpdateArticleDTO): Promise<Article> {
     return this.articleRepository.updateArticle(articleId, updateArticleDTO);
   }
+
+  async deleteArticle(articleId: number): Promise<void> {
+    await this.articleRepository.deleteArticle(articleId);
+  }
 }
