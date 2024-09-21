@@ -1,5 +1,5 @@
 import { json, redirect } from "@remix-run/node";
-import { Form, Link, Links, Meta, NavLink, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react";
+import { Form, Links, Meta, NavLink, Outlet, Scripts, ScrollRestoration, useLoaderData, useNavigation } from "@remix-run/react";
 import { MockArticleRepository } from "~/infrastructure/repositories/MockArticleRepository";
 import { ArticleUseCases } from "~/application/usecases/ArticleUseCases";
 
@@ -21,6 +21,7 @@ export const loader = async () => {
 
 export default function App() {
   const { articles } = useLoaderData<typeof loader>();
+  const navigation = useNavigation();
 
   return (
     <html lang="en">
@@ -58,7 +59,13 @@ export default function App() {
             )}
           </nav>
         </div>
-        <Outlet />
+        <div
+          className={
+            navigation.state === "loading" ? "loading" : ""
+          }
+        >
+          <Outlet />
+        </div>
         <Scripts />
         <ScrollRestoration />
       </body>
