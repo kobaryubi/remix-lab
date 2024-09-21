@@ -1,5 +1,5 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { ArticleUseCases } from "~/application/usecases/ArticleUseCases";
 import { EntityNotFoundError } from "~/domain/errors/EntityNotFoundError";
@@ -33,7 +33,14 @@ export default function Article() {
 
   return (
     <div>
-      <h1>{title}</h1>
+      <div>
+        <h1>{title}</h1>
+      </div>
+      <div>
+        <Form action="edit">
+          <button type="submit">Edit</button>
+        </Form>
+      </div>
     </div>
   )
 }
