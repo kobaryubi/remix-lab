@@ -1,5 +1,5 @@
 import { ActionFunction, LoaderFunctionArgs, json, redirect } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData, useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { ArticleUseCases } from "~/application/usecases/ArticleUseCases";
 import { EntityNotFoundError } from "~/domain/errors/EntityNotFoundError";
@@ -49,6 +49,8 @@ export default function EditArticle() {
   const { article } = useLoaderData<typeof loader>();
   const { title } = article;
 
+  const navigate = useNavigate();
+
   return (
     <Form method="post">
       <label>
@@ -63,6 +65,7 @@ export default function EditArticle() {
       </label>
       <p>
         <button type="submit">Save</button>
+        <button type="button" onClick={() => navigate(-1)}>Cancel</button>
       </p>
     </Form>
   )
