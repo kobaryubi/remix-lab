@@ -1,10 +1,25 @@
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
+import { ActionFunctionArgs, json, type LoaderFunctionArgs } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { ArticleUseCases } from "~/application/usecases/ArticleUseCases";
 import { ArticleFavoriteButton } from "~/components/features/ArticleFavoriteButton";
 import { EntityNotFoundError } from "~/domain/errors/EntityNotFoundError";
 import { MockArticleRepository } from "~/infrastructure/repositories/MockArticleRepository";
+
+export const action = async ({ params, request }: ActionFunctionArgs) => {
+  invariant(params.articleId, "Missing articleId param");
+
+  const articleId = parseInt(params.articleId);
+
+  const formData = await request.formData();
+  const updateArticleDTO = {
+    isFavorited: formData.get("favorite") === "true",
+  };
+
+  const articleRepository = new MockArticleRepository();
+  const useCases = new ArticleUseCases(articleRepository);
+  return await useCases.updateArticle(articleId, updateArticleDTO);
+};
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   invariant(params.articleId, "Missing articleId param");
