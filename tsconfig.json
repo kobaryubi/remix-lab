@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "types": ["@remix-run/node", "vite/client"],
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "target": "ES2022",
     "strict": true,
     "baseUrl": ".",
     "paths": {
