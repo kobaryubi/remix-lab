@@ -45,14 +45,14 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
 export default function Article() {
   const { article } = useLoaderData<typeof loader>();
-  const { title, isFavorited } = article;
+  const { title } = article;
 
   return (
     <div>
       <article>
         <h1>
           {title}
-          <ArticleFavoriteButton isFavorited={isFavorited} />
+          <ArticleFavoriteButton article={article} />
         </h1>
       </article>
       <div>

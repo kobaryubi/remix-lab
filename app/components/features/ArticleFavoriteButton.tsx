@@ -1,13 +1,15 @@
 import { useFetcher } from "@remix-run/react";
 import { FC } from "react";
 import { FavoriteButton } from "~/components/ui/FavoriteButton";
+import { Article } from "~/domain/entities/Article";
 
-interface ArticleFavoriteButtonProps {
-  isFavorited: boolean;
+interface ArticleFavoriteButtonProps  {
+  article: Pick<Article, "isFavorited">;
 }
 
-export const ArticleFavoriteButton: FC<ArticleFavoriteButtonProps> = ({ isFavorited }) => {
+export const ArticleFavoriteButton: FC<ArticleFavoriteButtonProps> = ({ article }) => {
   const fetcher = useFetcher();
+  const isFavorited = fetcher.formData ? fetcher.formData.get("isFavorited") === "true" : article.isFavorited;
 
   return (
     <fetcher.Form method="post">
