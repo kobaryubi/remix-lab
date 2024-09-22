@@ -2,6 +2,7 @@ import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { ArticleUseCases } from "~/application/usecases/ArticleUseCases";
+import { ArticleFavoriteButton } from "~/components/features/ArticleFavoriteButton";
 import { EntityNotFoundError } from "~/domain/errors/EntityNotFoundError";
 import { MockArticleRepository } from "~/infrastructure/repositories/MockArticleRepository";
 
@@ -29,13 +30,16 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
 export default function Article() {
   const { article } = useLoaderData<typeof loader>();
-  const { title } = article;
+  const { title, isFavorited } = article;
 
   return (
     <div>
-      <div>
-        <h1>{title}</h1>
-      </div>
+      <article>
+        <h1>
+          {title}
+          <ArticleFavoriteButton isFavorited={isFavorited} />
+        </h1>
+      </article>
       <div>
         <Form action="edit">
           <button type="submit">Edit</button>
