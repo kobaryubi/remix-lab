@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
+    "types": ["@remix-run/node", "vite/client"],
     "strict": true,
     "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"]
     },
+    "noEmit": true
   }
 }

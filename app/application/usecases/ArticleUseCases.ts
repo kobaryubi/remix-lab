@@ -9,8 +9,8 @@ export class ArticleUseCases {
     private articleRepository: ArticleRepository,
   ) {}
 
-  async getArticles(): Promise<Article[]> {
-    return this.articleRepository.getArticles();
+  async getArticles(query: string | null): Promise<Article[]> {
+    return this.articleRepository.getArticles(query);
   }
 
   async getArticle(articleId: number): Promise<Article> {

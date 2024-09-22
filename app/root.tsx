@@ -1,7 +1,8 @@
-import { json, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 import { Form, Links, Meta, NavLink, Outlet, Scripts, ScrollRestoration, useLoaderData, useNavigation } from "@remix-run/react";
 import { MockArticleRepository } from "~/infrastructure/repositories/MockArticleRepository";
 import { ArticleUseCases } from "~/application/usecases/ArticleUseCases";
+import { useEffect } from "react";
 
 export const action = async () => {
   const articleRepository = new MockArticleRepository();
@@ -11,17 +12,27 @@ export const action = async () => {
   return redirect(`/articles/${article.id}/edit`);
 }
 
-export const loader = async () => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const url = new URL(request.url);
+  const q = url.searchParams.get("q");
+
   const articleRepository = new MockArticleRepository();
   const useCases = new ArticleUseCases(articleRepository);
-  const articles = await useCases.getArticles();
+  const articles = await useCases.getArticles(q);
 
-  return json({ articles});
+  return json({ articles, q });
 }
 
 export default function App() {
-  const { articles } = useLoaderData<typeof loader>();
+  const { articles, q } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const searchField = document.getElementById("q");
+    if (searchField instanceof HTMLInputElement) {
+      searchField.value = q || "";
+    }
+  }, [q]);
 
   return (
     <html lang="en">
@@ -33,6 +44,16 @@ export default function App() {
       </head>
       <body>
         <div>
+          <Form role="search">
+            <input
+              id="q"
+              aria-label="Search articles"
+              name="q"
+              placeholder="Search"
+              type="search"
+              defaultValue={q || ""}
+            />
+          </Form>
           <Form method="post">
             <button type="submit">New</button>
           </Form>

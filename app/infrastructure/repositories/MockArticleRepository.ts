@@ -3,7 +3,15 @@ import { Article } from "~/domain/entities/Article";
 import { CreateArticleDTO } from "~/application/dtos/CreateArticleDTO";
 
 export class MockArticleRepository implements ArticleRepository {
-  async getArticles(): Promise<Article[]> {
+  async getArticles(query: string | null): Promise<Article[]> {
+    if (query?.startsWith("F") ) {
+      return [{ id: 1, title: "First Article" }];
+    }
+
+    if (query?.startsWith("S") ) {
+      return [{ id: 2, title: "Second Article" }];
+    }
+
     return [
       { id: 1, title: "First Article" },
       { id: 2, title: "Second Article" },
