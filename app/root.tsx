@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
-import { Form, Links, Meta, NavLink, Outlet, Scripts, ScrollRestoration, useLoaderData, useNavigation } from "@remix-run/react";
+import { Form, Links, Meta, NavLink, Outlet, Scripts, ScrollRestoration, useLoaderData, useNavigation, useSubmit } from "@remix-run/react";
 import { MockArticleRepository } from "~/infrastructure/repositories/MockArticleRepository";
 import { ArticleUseCases } from "~/application/usecases/ArticleUseCases";
 import { useEffect } from "react";
@@ -26,6 +26,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function App() {
   const { articles, q } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
+  const submit = useSubmit();
+  const isSearching = navigation.location && new URLSearchParams(navigation.location.search).has("q");
 
   useEffect(() => {
     const searchField = document.getElementById("q");
@@ -44,14 +46,24 @@ export default function App() {
       </head>
       <body>
         <div>
-          <Form role="search">
+          <Form
+            role="search"
+            onChange={(event) => {
+              submit(event.currentTarget, { replace: q !== null })
+            }}
+          >
             <input
               id="q"
+              className={isSearching ? "loading" : ""}
               aria-label="Search articles"
               name="q"
               placeholder="Search"
               type="search"
               defaultValue={q || ""}
+            />
+            <div
+              aria-hidden
+              hidden={!isSearching}
             />
           </Form>
           <Form method="post">
@@ -80,11 +92,7 @@ export default function App() {
             )}
           </nav>
         </div>
-        <div
-          className={
-            navigation.state === "loading" ? "loading" : ""
-          }
-        >
+        <div className={navigation.state === "loading" && !isSearching ? "loading" : ""}>
           <Outlet />
         </div>
         <Scripts />
