@@ -1,6 +1,7 @@
 import { ArticleRepository } from "~/domain/repositories/ArticleRepository";
 import { Article } from "~/domain/entities/Article";
 import { CreateArticleDTO } from "~/application/dtos/CreateArticleDTO";
+import { UpdateArticleDTO } from "~/application/dtos/UpdateArticleDTO";
 
 export class MockArticleRepository implements ArticleRepository {
   async getArticles(query: string | null): Promise<Article[]> {
@@ -38,8 +39,8 @@ export class MockArticleRepository implements ArticleRepository {
     return { id: 3, isFavorited: false, ...createArticleDTO };
   }
 
-  async updateArticle(articleId: number, updateArticleDTO: CreateArticleDTO): Promise<Article> {
-    return { id: articleId, isFavorited: false, ...updateArticleDTO };
+  async updateArticle(articleId: number, updateArticleDTO: UpdateArticleDTO): Promise<Article> {
+    return { id: articleId, title: "Updated Article", isFavorited: false, ...updateArticleDTO };
   }
 
   async deleteArticle(articleId: number): Promise<void> {}
