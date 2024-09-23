@@ -3,6 +3,12 @@ import { Form, Links, Meta, NavLink, Outlet, Scripts, ScrollRestoration, useLoad
 import { MockArticleRepository } from "~/infrastructure/repositories/MockArticleRepository";
 import { ArticleUseCases } from "~/application/usecases/ArticleUseCases";
 import { ReactNode, useEffect } from "react";
+import type { LinksFunction } from "@remix-run/node";
+import stylesheet from "~/tailwind.css?url";
+
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: stylesheet },
+];
 
 export const action = async () => {
   const articleRepository = new MockArticleRepository();
