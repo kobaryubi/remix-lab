@@ -2,7 +2,7 @@ import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 import { Form, Links, Meta, NavLink, Outlet, Scripts, ScrollRestoration, useLoaderData, useNavigation, useSubmit } from "@remix-run/react";
 import { MockArticleRepository } from "~/infrastructure/repositories/MockArticleRepository";
 import { ArticleUseCases } from "~/application/usecases/ArticleUseCases";
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 
 export const action = async () => {
   const articleRepository = new MockArticleRepository();
@@ -23,7 +23,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({ articles, q });
 }
 
-export default function App() {
+export function Layout({ children }: { children: ReactNode }) {
   const { articles, q } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
   const submit = useSubmit();
@@ -93,11 +93,15 @@ export default function App() {
           </nav>
         </div>
         <div className={navigation.state === "loading" && !isSearching ? "loading" : ""}>
-          <Outlet />
+          {children}
         </div>
         <Scripts />
         <ScrollRestoration />
       </body>
     </html>
-  )
+  );
+}
+
+export default function App() {
+  return <Outlet />
 }
