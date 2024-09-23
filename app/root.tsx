@@ -24,6 +24,24 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 }
 
 export function Layout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        {children}
+        <Scripts />
+        <ScrollRestoration />
+      </body>
+    </html>
+  );
+}
+
+export default function App() {
   const { articles, q } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
   const submit = useSubmit();
@@ -37,71 +55,57 @@ export function Layout({ children }: { children: ReactNode }) {
   }, [q]);
 
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        <div>
-          <Form
-            role="search"
-            onChange={(event) => {
-              submit(event.currentTarget, { replace: q !== null })
-            }}
-          >
-            <input
-              id="q"
-              className={isSearching ? "loading" : ""}
-              aria-label="Search articles"
-              name="q"
-              placeholder="Search"
-              type="search"
-              defaultValue={q || ""}
-            />
-            <div
-              aria-hidden
-              hidden={!isSearching}
-            />
-          </Form>
-          <Form method="post">
-            <button type="submit">New</button>
-          </Form>
-        </div>
-        <div>
-          <nav>
-            {articles.length ? (
-              <ul>
-                {articles.map(({id, title}) => (
-                  <li key={id}>
-                    <NavLink
-                      to={`articles/${id}`}
-                      className={({ isActive, isPending }) => (isActive ? "active" : isPending ? "pending" : "")}
-                    >
-                      {title}
-                    </NavLink>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>
-                <i>No articles</i>
-              </p>
-            )}
-          </nav>
-        </div>
-        <div className={navigation.state === "loading" && !isSearching ? "loading" : ""}>
-          {children}
-        </div>
-        <Scripts />
-        <ScrollRestoration />
-      </body>
-    </html>
-  );
-}
-
-export default function App() {
-  return <Outlet />
+    <>
+      <div>
+        <Form
+          role="search"
+          onChange={(event) => {
+            submit(event.currentTarget, { replace: q !== null })
+          }}
+        >
+          <input
+            id="q"
+            className={isSearching ? "loading" : ""}
+            aria-label="Search articles"
+            name="q"
+            placeholder="Search"
+            type="search"
+            defaultValue={q || ""}
+          />
+          <div
+            aria-hidden
+            hidden={!isSearching}
+          />
+        </Form>
+        <Form method="post">
+          <button type="submit">New</button>
+        </Form>
+      </div>
+      <div>
+        <nav>
+          {articles.length ? (
+            <ul>
+              {articles.map(({id, title}) => (
+                <li key={id}>
+                  <NavLink
+                    to={`articles/${id}`}
+                    className={({ isActive, isPending }) => (isActive ? "active" : isPending ? "pending" : "")}
+                  >
+                    {title}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>
+              <i>No articles</i>
+            </p>
+          )}
+        </nav>
+      </div>
+      <div className={navigation.state === "loading" && !isSearching ? "loading" : ""}>
+        <Outlet />
+      </div>
+    </>
+  )
 }
