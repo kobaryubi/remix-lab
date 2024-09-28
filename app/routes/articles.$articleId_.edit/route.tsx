@@ -20,7 +20,7 @@ export const action: ActionFunction = async ({
   const useCases = new ArticleUseCases(articleRepository);
   await useCases.updateArticle(articleId, updateArticleDTO);
 
-  return redirect(`/articles/${articleId}`);
+  return redirect(`/articles/${articleId.toString()}`);
 }
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {

@@ -3,6 +3,6 @@ export class EntityNotFoundError extends Error {
     private readonly entityName: string,
     private readonly entityId: string | number,
   ) {
-    super(`${entityName} with id ${entityId} not found`);
+    super(`${entityName} with id ${entityId.toString()} not found`);
   }
 }

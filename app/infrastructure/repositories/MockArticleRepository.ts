@@ -5,18 +5,16 @@ import { UpdateArticleDTO } from "~/application/dtos/UpdateArticleDTO";
 
 export class MockArticleRepository implements ArticleRepository {
   async getArticles(query: string | null): Promise<Article[]> {
-    if (query?.startsWith("F") ) {
-      return [{ id: 1, title: "First Article", isFavorited: false }];
+    if (query?.startsWith("F")) {
+      return Promise.resolve([{ id: 1, title: "First Article", isFavorited: false }]);
     }
-
-    if (query?.startsWith("S") ) {
-      return [{ id: 2, title: "Second Article", isFavorited: true }];
+    if (query?.startsWith("S")) {
+      return Promise.resolve([{ id: 2, title: "Second Article", isFavorited: true }]);
     }
-
-    return [
+    return Promise.resolve([
       { id: 1, title: "First Article", isFavorited: false },
       { id: 2, title: "Second Article", isFavorited: true },
-    ];
+    ]);
   }
 
   async getArticle(articleId: number): Promise<Article | null> {
@@ -30,11 +28,11 @@ export class MockArticleRepository implements ArticleRepository {
   }
 
   async createArticle(createArticleDTO: CreateArticleDTO): Promise<Article> {
-    return { id: 3, isFavorited: false, ...createArticleDTO };
+    return Promise.resolve({ id: 3, isFavorited: false, ...createArticleDTO });
   }
 
   async updateArticle(articleId: number, updateArticleDTO: UpdateArticleDTO): Promise<Article> {
-    return { id: articleId, title: "Updated Article", isFavorited: false, ...updateArticleDTO };
+    return Promise.resolve({ id: articleId, title: "Updated Article", isFavorited: false, ...updateArticleDTO });
   }
 
   async deleteArticle(articleId: number): Promise<void> {}
