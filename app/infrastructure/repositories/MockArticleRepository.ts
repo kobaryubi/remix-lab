@@ -20,19 +20,13 @@ export class MockArticleRepository implements ArticleRepository {
   }
 
   async getArticle(articleId: number): Promise<Article | null> {
-    if (articleId === 1) {
-      return { id: 1, title: "First Article", isFavorited: false };
-    }
+    const articles = [
+    { id: 1, title: "First Article", isFavorited: false },
+    { id: 2, title: "Second Article", isFavorited: true },
+    { id: 3, title: "New Article", isFavorited: false },
+    ];
 
-    if (articleId === 2) {
-      return { id: 2, title: "Second Article", isFavorited: true };
-    }
-
-    if (articleId === 3) {
-      return { id: 3, title: "New Article", isFavorited: false };
-    }
-
-    return null;
+    return Promise.resolve(articles[articleId] || null);
   }
 
   async createArticle(createArticleDTO: CreateArticleDTO): Promise<Article> {

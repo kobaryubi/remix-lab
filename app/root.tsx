@@ -15,7 +15,7 @@ export const action = async () => {
   const useCases = new ArticleUseCases(articleRepository);
   const article = await useCases.createArticle({ title: "New Article" });
 
-  return redirect(`/articles/${article.id}/edit`);
+  return redirect(`/articles/${article.id.toString()}/edit`);
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -57,7 +57,7 @@ export default function App() {
   useEffect(() => {
     const searchField = document.getElementById("q");
     if (searchField instanceof HTMLInputElement) {
-      searchField.value = q || "";
+      searchField.value = q ?? "";
     }
   }, [q]);
 
@@ -77,7 +77,7 @@ export default function App() {
             name="q"
             placeholder="Search"
             type="search"
-            defaultValue={q || ""}
+            defaultValue={q ?? ""}
           />
           <div
             aria-hidden
@@ -95,7 +95,7 @@ export default function App() {
               {articles.map(({id, title}) => (
                 <li key={id}>
                   <NavLink
-                    to={`articles/${id}`}
+                    to={`articles/${id.toString()}`}
                     className={({ isActive, isPending }) => (isActive ? "active" : isPending ? "pending" : "")}
                   >
                     {title}

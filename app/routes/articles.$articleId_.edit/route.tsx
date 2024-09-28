@@ -65,7 +65,7 @@ export default function EditArticle() {
       </label>
       <p>
         <button type="submit">Save</button>
-        <button type="button" onClick={() => navigate(-1)}>Cancel</button>
+        <button type="button" onClick={() => { navigate(-1); }}>Cancel</button>
       </p>
     </Form>
   )
