@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "remix vite:dev --host 0.0.0.0",
+    "build": "remix vite:build",
+    "start": "remix-serve build/server/index.js",
     "typecheck": "tsc"
   },
   "dependencies": {
